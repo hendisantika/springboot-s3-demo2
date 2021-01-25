@@ -1,6 +1,7 @@
 package com.hendisantika.springboots3demo2.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.hendisantika.springboots3demo2.config.ApplicationProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,9 @@ public class DocumentManagementService {
                 uploadFileToS3bucket(uniqueFileName, file, applicationProperties.getAwsServices().getBucketName());
             });
         }
+    }
+
+    private void uploadFileToS3bucket(String fileName, File file, String bucketName) {
+        amazonS3Client.putObject(new PutObjectRequest(bucketName, fileName, file));
     }
 }
