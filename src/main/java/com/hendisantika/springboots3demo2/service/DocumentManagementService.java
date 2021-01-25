@@ -48,4 +48,8 @@ public class DocumentManagementService {
         S3Object object = amazonS3Client.getObject(bucketName, fileName);
         return object;
     }
+
+    private void deleteFileFromS3bucket(String fileName, String bucketName) {
+        amazonS3Client.deleteObject(bucketName, fileName);
+    }
 }
