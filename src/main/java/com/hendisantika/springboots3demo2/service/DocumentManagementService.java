@@ -5,6 +5,10 @@ import com.hendisantika.springboots3demo2.config.ApplicationProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,4 +27,14 @@ public class DocumentManagementService {
 
     @Autowired
     private ApplicationProperties applicationProperties;
+
+    public void uploadMultipleFiles(List<MultipartFile> files) {
+        if (files != null) {
+            files.forEach(multipartFile -> {
+                File file = convertMultiPartFileToFile(multipartFile);
+                String uniqueFileName = System.currentTimeMillis() + "_" + multipartFile.getOriginalFilename();
+                uploadFileToS3bucket(uniqueFileName, file, applicationProperties.getAwsServices().getBucketName());
+            });
+        }
+    }
 }
